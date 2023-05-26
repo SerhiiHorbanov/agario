@@ -40,7 +40,7 @@ namespace Engine
         {
             state.Input();
         }
-
+        
         public void Timing()
         {
             if (DateTime.Now.Ticks - lastTimingTick < TimeSpan.TicksPerSecond / neededFPS)
