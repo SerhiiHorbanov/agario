@@ -8,9 +8,14 @@ namespace Engine
 {
     public class Game
     {
-        StateMachine stateMachine;
+        public StateMachine stateMachine;
 
-        bool continuePlaying = true;
+        public bool continuePlaying = true;
+
+        public Game()
+        {
+            stateMachine = new StateMachine();
+        }
 
         public void Run()
         {
