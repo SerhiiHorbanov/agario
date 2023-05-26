@@ -1,7 +1,7 @@
 ﻿
 namespace Engine
 {
-    abstract class State
+    public abstract class State
     {
         StateMachine stateMachine;
 

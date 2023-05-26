@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    class Game
+    public class Game
     {
         StateMachine stateMachine;
 

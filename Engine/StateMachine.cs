@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    class StateMachine
+    public class StateMachine
     {
         private long ticksBetweenFrames = 0;
         public long lastTimingTick = 0;
