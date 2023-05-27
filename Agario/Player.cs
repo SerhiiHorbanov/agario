@@ -9,34 +9,34 @@ namespace Agario
         public Vector2f position;
         public Color color;
         public CircleShape shape;
-        public Playing state;
 
-        private int mass;
+        private float mass;
         private float radius;
 
-        public int Mass 
+        public float Mass 
         {
             get { return mass; }
             set 
             {
-                radius = (float)Math.Sqrt(mass / Math.PI) * 10;
+                radius = (float)Math.Sqrt(value / Math.PI) * 10;
+                mass = value;
             }
         }
-        public int Radius
+        public float Radius
         {
             get { return radius; }
             set 
             {
-                
+                mass = (float)Math.PI * value * value;
+                radius = value; 
             }
         }
 
-        public Player(Vector2f position, int mass, Color color, Playing state)
+        public Player(Vector2f position, int mass, Color color)
         {
             this.position = position;
             this.mass = mass;
             this.color = color;
-            this.state = state;
             shape = new CircleShape(Radius);
         }
 
@@ -49,12 +49,6 @@ namespace Agario
         {
             mass++;
             shape.Radius = Radius;
-        }
-
-        public void Render()
-        {
-            shape.Position = position;
-            AgarioGame.window.Draw(shape);
         }
     }
 }

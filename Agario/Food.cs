@@ -1,7 +1,6 @@
 ﻿using System;
 using SFML.System;
 using SFML.Graphics;
-using Agario.States;
 
 namespace Agario
 {
@@ -15,11 +14,6 @@ namespace Agario
         {
             this.position = position;
             this.color = color;
-        }
-
-        public void Render()
-        {
-
         }
     }
 }

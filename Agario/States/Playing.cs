@@ -7,14 +7,14 @@ namespace Agario.States
     class Playing : State
     {
         public static Vector2f mapSize = new Vector2f(5000, 5000);
-        private List<Player> players = new List<Player>();
-        private List<Food> foods = new List<Food>();
+        public List<Player> players = new List<Player>();
+        public List<Food> foods = new List<Food>();
         public Camera camera { get; private set; }
 
         public Playing(StateMachine stateMachine) : base(stateMachine)
         {
             this.stateMachine = stateMachine;
-            camera = new Camera();
+            camera = new Camera(new Vector2f(0, 0), this);
         }
 
         public override void Update()
@@ -45,7 +45,7 @@ namespace Agario.States
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Player(position, 1, color, this);
+            return new Player(position, 1, color);
         }
 
         public Food newFood()
@@ -54,7 +54,7 @@ namespace Agario.States
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Food(position, color, this);
+            return new Food(position, color);
         }
     }
 }

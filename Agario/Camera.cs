@@ -38,9 +38,12 @@ namespace Agario
 
             float clampedX = Math.Clamp(shape.Position.X, Left, Right);
             float clampedY = Math.Clamp(shape.Position.Y, Top, Bottom);
+
             float differenceX = shape.Position.X - clampedX;
             float differenceY = shape.Position.Y - clampedY;
+
             float distanceToCamera = (float)Math.Sqrt((differenceX * differenceX) + (differenceY * differenceY));
+
             if (distanceToCamera < shape.Radius)
             {
                 AgarioGame.window.Draw(shape);
