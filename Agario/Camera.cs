@@ -27,12 +27,19 @@ namespace Agario
 
         public void Render()
         {
-            List<Player> playersToRender = new List<Player>();
+            foreach (Player player in state.players)
+            {
+                TryRenderCircle(player.shape, player.position);
+            }
 
-            
+            foreach (Food food in state.foods)
+            {
+                TryRenderCircle(food.shape, food.position);
+            }
+
         }
 
-        public void RenderCircle(CircleShape shape, Vector2f positionOnMap)
+        public void TryRenderCircle(CircleShape shape, Vector2f positionOnMap)
         {
             shape.Position = position - position;
 

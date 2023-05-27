@@ -6,14 +6,16 @@ namespace Agario
 {
     class Food
     {
-        Vector2f position;
-        Color color;
-        const float radius = 5;
+        public Vector2f position { get; private set; }
+        public CircleShape shape { get; private set; }
+        public const float radius = 5;
 
         public Food(Vector2f position, Color color)
         {
             this.position = position;
-            this.color = color;
+            shape = new CircleShape(radius);
+            shape.FillColor = color;
+            shape.Position = position;
         }
     }
 }

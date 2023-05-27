@@ -13,6 +13,7 @@
 
         public void Run()
         {
+            SetStartingState();
             while (continuePlaying)
             {
                 stateMachine.Update();

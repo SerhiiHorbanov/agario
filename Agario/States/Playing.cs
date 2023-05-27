@@ -14,7 +14,11 @@ namespace Agario.States
         public Playing(StateMachine stateMachine) : base(stateMachine)
         {
             this.stateMachine = stateMachine;
-            camera = new Camera(new Vector2f(0, 0), this);
+            camera = new Camera(new Vector2f(500, 500), this);
+
+            //для тесту щоб було видно
+            players.Add(newPlayer());
+            players[0].position = new Vector2f(250, 250);
         }
 
         public override void Update()
@@ -24,7 +28,9 @@ namespace Agario.States
 
         public override void Render()
         {
+            AgarioGame.window.Clear(Color.White);
             camera.Render();
+            AgarioGame.window.Display();
         }
 
         public override void Input()
