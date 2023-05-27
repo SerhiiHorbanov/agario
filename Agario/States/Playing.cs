@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Engine;
+﻿using Engine;
 using SFML.System;
 using SFML.Graphics;
 
@@ -12,6 +7,10 @@ namespace Agario.States
     class Playing : State
     {
         public static Vector2f mapSize = new Vector2f(5000, 5000);
+        private List<Player> players = new List<Player>();
+        private List<Food> foods = new List<Food>();
+        public Vector2f cameraPosition { get; private set; }
+
         public Playing(StateMachine stateMachine) : base(stateMachine)
         {
 
@@ -24,7 +23,7 @@ namespace Agario.States
 
         public override void Render()
         {
-            
+
         }
 
         public override void Input()
@@ -46,6 +45,15 @@ namespace Agario.States
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
             return new Player(position, 1, color);
+        }
+
+        public static Food newFood()
+        {
+            Vector2f position = GetRandomPointInsideMap();
+            byte[] colorBytes = new byte[3];
+            AgarioGame.random.NextBytes(colorBytes);
+            Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
+            return new Food(position, color);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SFML.System;
 using SFML.Graphics;
+using Agario.States;
 
 namespace Agario
 {
@@ -7,7 +8,6 @@ namespace Agario
     {
         Vector2f position;
         Color color;
-
         public Food(Vector2f position, Color color)
         {
             this.position = position;

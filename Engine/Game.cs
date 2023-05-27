@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Engine
+﻿namespace Engine
 {
-    public class Game
+    public abstract class Game
     {
         public StateMachine stateMachine;
 
@@ -27,5 +21,7 @@ namespace Engine
                 stateMachine.Timing();
             }
         }
+
+        protected abstract void SetStartingState();
     }
 }

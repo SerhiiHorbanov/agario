@@ -12,7 +12,7 @@ namespace Agario
         public CircleShape shape;
 
         public float radius
-            => (float)Math.Sqrt(mass / Math.PI);
+            => (float)Math.Sqrt(mass / Math.PI) * 10;
 
         public Player(Vector2f position, int mass, Color color)
         {
@@ -31,6 +31,12 @@ namespace Agario
         {
             mass++;
             shape.Radius = radius;
+        }
+
+        public void Render()
+        {
+            shape.Position = position;
+            AgarioGame.window.Draw(shape);
         }
     }
 }
