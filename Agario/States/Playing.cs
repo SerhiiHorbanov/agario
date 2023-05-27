@@ -27,7 +27,7 @@ namespace Agario.States
 
             foreach (Player player in players)
             {
-
+                //if (player.position)
             }
 
 
@@ -45,7 +45,7 @@ namespace Agario.States
             return new Vector2f(x, y);
         }
 
-        public static Player newPlayer()
+        public Player newPlayer()
         {
             Vector2f position = GetRandomPointInsideMap();
             byte[] colorBytes = new byte[3];
@@ -54,7 +54,7 @@ namespace Agario.States
             return new Player(position, 1, color, this);
         }
 
-        public static Food newFood()
+        public Food newFood()
         {
             Vector2f position = GetRandomPointInsideMap();
             byte[] colorBytes = new byte[3];
