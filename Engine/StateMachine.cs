@@ -20,6 +20,7 @@ namespace Engine
         public void SetState(State state)
         {
             this.state = state;
+            this.state.Initialize();
         }
 
         public void Update()

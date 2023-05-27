@@ -10,15 +10,17 @@ namespace Agario
         public int mass;
         public Color color;
         public CircleShape shape;
+        public Playing state;
 
         public float radius
             => (float)Math.Sqrt(mass / Math.PI) * 10;
 
-        public Player(Vector2f position, int mass, Color color)
+        public Player(Vector2f position, int mass, Color color, Playing state)
         {
             this.position = position;
             this.mass = mass;
             this.color = color;
+            this.state = state;
             shape = new CircleShape(radius);
         }
 

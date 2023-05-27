@@ -13,7 +13,7 @@ namespace Agario.States
 
         public Playing(StateMachine stateMachine) : base(stateMachine)
         {
-
+            this.stateMachine = stateMachine;
         }
 
         public override void Update()
@@ -23,6 +23,13 @@ namespace Agario.States
 
         public override void Render()
         {
+            List<Player> playersToRender = new List<Player>();
+
+            foreach (Player player in players)
+            {
+
+            }
+
 
         }
 
@@ -44,7 +51,7 @@ namespace Agario.States
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Player(position, 1, color);
+            return new Player(position, 1, color, this);
         }
 
         public static Food newFood()
