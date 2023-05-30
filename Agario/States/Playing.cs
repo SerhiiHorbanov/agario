@@ -11,49 +11,35 @@ namespace Agario.States
         public static Vector2f mapSize = new Vector2f(5000, 5000);
 
         List<GameObject> gameObjects = new List<GameObject>();
+        Blob playerBlob;
 
-        public Playing(StateMachine stateMachine) : base(stateMachine)
+        public Playing(StateMachine stateMachine, int playerCount, int foodCount) : base(stateMachine)
         {
             this.stateMachine = stateMachine;
 
-            //для тесту щоб було видно
+            CreateFoodAndPlayers(playerCount, foodCount);
 
-            Camera.position = new Vector2f(250, 250);
-            gameObjects.Add(newPlayer());
+            if (playerCount <= 0)
+                return;
 
-            if (gameObjects[0] is Blob)
-            {
-                Blob blob = gameObjects[0] as Blob;
-                blob.position = new Vector2f(0, 0);
-                blob.Mass = 100;
-            }
+            GameObject firstCreatedBlob = gameObjects[foodCount];
 
-            gameObjects.Add(newPlayer());
+            if (firstCreatedBlob is Blob)
+                playerBlob = (Blob)firstCreatedBlob;
+        }
 
-            if (gameObjects[1] is Blob)
-            {
-                Blob blob = gameObjects[1] as Blob;
-                blob.position = new Vector2f(260, 250);
-                blob.Mass = 1;
-            }
+        public void CreateFoodAndPlayers(int playerCount, int foodCount)
+        {
+            for (int i = 0; i < foodCount; i++)
+                gameObjects.Add(NewFood());
 
-            gameObjects.Add(newPlayer());
+            if (playerCount <= 0)
+                return;
 
-            if (gameObjects[2] is Blob)
-            {
-                Blob blob = gameObjects[2] as Blob;
-                blob.position = new Vector2f(0, 250);
-                blob.Mass = 10;
-            }
+            for (int i = 0; i < playerCount; i++)
+                gameObjects.Add(NewPlayer());
 
-            gameObjects.Add(newPlayer());
 
-            if (gameObjects[3] is Blob)
-            {
-                Blob blob = gameObjects[3] as Blob;
-                blob.position = new Vector2f(100, 100);
-                blob.Mass = 50;
-            }
         }
 
         public override void Update()
@@ -65,6 +51,7 @@ namespace Agario.States
 
         public override void Render()
         {
+            Camera.position = playerBlob.position;
             Camera.Render(gameObjects);
         }
 
@@ -80,16 +67,16 @@ namespace Agario.States
             return new Vector2f(x, y);
         }
 
-        public Blob newPlayer()
+        public Blob NewPlayer()
         {
             Vector2f position = GetRandomPointInsideMap();
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Blob(position, 1, color);
+            return new Blob(position, 1, color, true);
         }
 
-        public Food newFood()
+        public Food NewFood()
         {
             Vector2f position = GetRandomPointInsideMap();
             byte[] colorBytes = new byte[3];

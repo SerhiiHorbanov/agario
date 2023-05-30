@@ -30,9 +30,10 @@ namespace Agario.GameObjects
             }
         }
 
-        public Blob(Vector2f position, int mass, Color color)
+        public Blob(Vector2f position, int mass, Color color, bool isAi)
         {
             this.position = position;
+            this.isAI = isAi;
             Mass = mass;
             shape = new CircleShape(Radius);
             shape.FillColor = color;
@@ -70,7 +71,9 @@ namespace Agario.GameObjects
 
         public void Update()
         {
-            position.X += 2f;
+            if (isAI)
+                return;
+
         }
 
         public float DistanceTo(Vector2f otherPosition)

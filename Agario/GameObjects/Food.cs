@@ -6,7 +6,7 @@ namespace Agario.GameObjects
 {
     class Food : CircleObject
     {
-        public const float radius = 1;
+        public new const float radius = 5;
         public Food(Vector2f position, Color color)
         {
             this.position = position;

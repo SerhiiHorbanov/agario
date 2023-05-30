@@ -12,7 +12,7 @@ namespace /*it's a me, */Agario
 
         protected override void SetStartingState()
         {
-            stateMachine.SetState(new Playing(stateMachine));
+            stateMachine.SetState(new Playing(stateMachine, 100, 500));
         }
     }
 }
