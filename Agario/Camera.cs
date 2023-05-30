@@ -1,60 +1,40 @@
 ﻿using SFML.System;
 using SFML.Graphics;
 using Agario.States;
+using Agario.GameObjects;
+using Agario.GameObjects.Interfaces;
+
 
 namespace Agario
 {
     class Camera
     {
-        Vector2f position;
-        public Vector2f cameraSize => (Vector2f)AgarioGame.window.Size;
-        private Playing state;
+        static Vector2f position;
+        public static Vector2f cameraSize => (Vector2f)AgarioGame.window.Size;
 
-        public float Left
+        public static float Left
             => position.X - (cameraSize.X / 2);
-        public float Right
+        public static float Right
             => position.X + (cameraSize.X / 2);
-        public float Top
+        public static float Top
             => position.Y - (cameraSize.Y / 2);
-        public float Bottom
+        public static float Bottom
             => position.Y + (cameraSize.Y / 2);
 
-        public Camera(Vector2f position, Playing state)
+        public Camera(Vector2f position)
         {
             this.position = position;
-            this.state = state;
         }
 
-        public void Render()
+        public void Render(List<GameObject> gameObjects)
         {
-            foreach (Player player in state.players)
-            {
-                TryRenderCircle(player.shape, player.position);
-            }
+            AgarioGame.window.Clear(Color.Black);
 
-            foreach (Food food in state.foods)
-            {
-                TryRenderCircle(food.shape, food.position);
-            }
+            foreach (GameObject gameObject in gameObjects)
+                if (gameObject is IRenderable renderable)
+                    renderable.TryRender();
 
-        }
-
-        public void TryRenderCircle(CircleShape shape, Vector2f positionOnMap)
-        {
-            shape.Position = position - position;
-
-            float clampedX = Math.Clamp(shape.Position.X, Left, Right);
-            float clampedY = Math.Clamp(shape.Position.Y, Top, Bottom);
-
-            float differenceX = shape.Position.X - clampedX;
-            float differenceY = shape.Position.Y - clampedY;
-
-            float distanceToCamera = (float)Math.Sqrt((differenceX * differenceX) + (differenceY * differenceY));
-
-            if (distanceToCamera < shape.Radius)
-            {
-                AgarioGame.window.Draw(shape);
-            }
+            AgarioGame.window.Display();
         }
     }
 }

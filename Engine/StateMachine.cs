@@ -42,7 +42,7 @@ namespace Engine
         {
             if (DateTime.Now.Ticks - lastTimingTick < TimeSpan.TicksPerSecond / neededFPS)
             {
-                System.Threading.Thread.Sleep(100);//(int)(ticksBetweenFrames - DateTime.Now.Ticks - lastTimingTick));
+                System.Threading.Thread.Sleep(1000);//(int)(ticksBetweenFrames - DateTime.Now.Ticks - lastTimingTick));
             }
             lastTimingTick = DateTime.Now.Ticks;
         }

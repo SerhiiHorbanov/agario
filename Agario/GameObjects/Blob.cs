@@ -2,9 +2,9 @@
 using SFML.Graphics;
 using Agario.States;
 
-namespace Agario
+namespace Agario.GameObjects
 {
-    class Player
+    class Blob
     {
         public Vector2f position;
         public CircleShape shape;
@@ -12,10 +12,10 @@ namespace Agario
         private float mass;
         private float radius;
 
-        public float Mass 
+        public float Mass
         {
             get { return mass; }
-            set 
+            set
             {
                 radius = (float)Math.Sqrt(value / Math.PI) * 10;
                 mass = value;
@@ -24,17 +24,17 @@ namespace Agario
         public float Radius
         {
             get { return radius; }
-            set 
+            set
             {
-                mass = (float)Math.PI * value * value;
-                radius = value; 
+                mass = (float)Math.PI * value * value / 10;
+                radius = value;
             }
         }
 
-        public Player(Vector2f position, int mass, Color color)
+        public Blob(Vector2f position, int mass, Color color)
         {
             this.position = position;
-            this.mass = mass;
+            Mass = mass;
             shape = new CircleShape(Radius);
             shape.FillColor = color;
         }
@@ -53,17 +53,18 @@ namespace Agario
             return true;
         }
 
-        public bool TryEat(Player player)
+        public bool TryEat(Blob player)
         {
             if (player == this)
                 return false;
 
             if (player.mass > mass * 0.95)
 
-            if (DistanceTo(player.position) > radius - player.radius)
-                return false;
+                if (DistanceTo(player.position) > radius - player.radius)
+                    return false;
 
             Mass += player.mass;
+            shape.Radius = radius;
 
             return true;
         }
@@ -73,7 +74,7 @@ namespace Agario
             float differenceX = position.X - otherPosition.X;
             float differenceY = position.Y - otherPosition.Y;
 
-            float distanceToOtherPosition = (float)Math.Sqrt((differenceX * differenceX) + (differenceY * differenceY));
+            float distanceToOtherPosition = (float)Math.Sqrt(differenceX * differenceX + differenceY * differenceY);
             return distanceToOtherPosition;
         }
     }

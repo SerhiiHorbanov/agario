@@ -2,7 +2,7 @@
 using SFML.System;
 using SFML.Graphics;
 
-namespace Agario
+namespace Agario.GameObjects
 {
     class Food
     {
