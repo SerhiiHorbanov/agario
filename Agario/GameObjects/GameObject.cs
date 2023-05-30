@@ -8,14 +8,6 @@ namespace Agario.GameObjects
 {
     abstract class GameObject
     {
-        public virtual void Update()
-        {
-
-        }
-
-        public virtual void TryRender()
-        {
-
-        }
+        
     }
 }

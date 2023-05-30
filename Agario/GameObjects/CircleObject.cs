@@ -7,29 +7,28 @@ namespace Agario.GameObjects
     abstract class CircleObject : GameObject, IRenderable
     {
         public Vector2f position;
-        private CircleShape shape;
+        protected CircleShape shape = new CircleShape();
 
-        private float radius;
+        protected float radius;
 
         public void TryRender()
         {
-            shape.Position = position;
+            float clampedX = Math.Clamp(position.X, Camera.Left, Camera.Right);
+            float clampedY = Math.Clamp(position.Y, Camera.Top, Camera.Bottom);
 
-            float clampedX = Math.Clamp(shape.Position.X, Left, Right);
-            float clampedY = Math.Clamp(shape.Position.Y, Top, Bottom);
-
-            float differenceX = shape.Position.X - clampedX;
-            float differenceY = shape.Position.Y - clampedY;
+            float differenceX = position.X - clampedX;
+            float differenceY = position.Y - clampedY;
 
             float distanceToCamera = (float)Math.Sqrt((differenceX * differenceX) + (differenceY * differenceY));
 
-            if (distanceToCamera < shape.Radius)
+            if (distanceToCamera < radius)
                 Render();
         }
 
-        protected void Render()
+        void Render()
         {
-            shape.Position = position - position;
+            shape.Radius = radius;
+            shape.Position = position - Camera.position - new Vector2f(radius, radius) + (new Vector2f(Camera.cameraSize.X, Camera.cameraSize.Y) * 0.5f);
             AgarioGame.window.Draw(shape);
         }
     }

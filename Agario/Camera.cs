@@ -7,9 +7,9 @@ using Agario.GameObjects.Interfaces;
 
 namespace Agario
 {
-    class Camera
+    static class Camera
     {
-        static Vector2f position;
+        public static Vector2f position;
         public static Vector2f cameraSize => (Vector2f)AgarioGame.window.Size;
 
         public static float Left
@@ -21,12 +21,7 @@ namespace Agario
         public static float Bottom
             => position.Y + (cameraSize.Y / 2);
 
-        public Camera(Vector2f position)
-        {
-            this.position = position;
-        }
-
-        public void Render(List<GameObject> gameObjects)
+        public static void Render(List<GameObject> gameObjects)
         {
             AgarioGame.window.Clear(Color.Black);
 

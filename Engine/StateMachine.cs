@@ -5,7 +5,7 @@ namespace Engine
     public class StateMachine
     {
         private long ticksBetweenFrames = TimeSpan.TicksPerSecond / 60;
-        public long lastTimingTick = 0;
+        public long lastTimingTick = DateTime.Now.Ticks;
 
         State state;
 
@@ -40,9 +40,10 @@ namespace Engine
 
         public void Timing()
         {
-            if (DateTime.Now.Ticks - lastTimingTick < TimeSpan.TicksPerSecond / neededFPS)
+            if (DateTime.Now.Ticks - lastTimingTick < ticksBetweenFrames)
             {
-                System.Threading.Thread.Sleep(1000);//(int)(ticksBetweenFrames - DateTime.Now.Ticks - lastTimingTick));
+                int timeToSleep = (int)((ticksBetweenFrames - (DateTime.Now.Ticks - lastTimingTick)) / TimeSpan.TicksPerMillisecond);
+                System.Threading.Thread.Sleep(timeToSleep);
             }
             lastTimingTick = DateTime.Now.Ticks;
         }

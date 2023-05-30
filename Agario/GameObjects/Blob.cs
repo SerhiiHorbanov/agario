@@ -1,16 +1,15 @@
 ﻿using SFML.System;
 using SFML.Graphics;
 using Agario.States;
+using Agario.GameObjects.Interfaces;
 
 namespace Agario.GameObjects
 {
-    class Blob
+    class Blob : CircleObject, IUpdateable
     {
-        public Vector2f position;
-        public CircleShape shape;
+        public bool isAI { get; private set; }
 
         private float mass;
-        private float radius;
 
         public float Mass
         {
@@ -67,6 +66,11 @@ namespace Agario.GameObjects
             shape.Radius = radius;
 
             return true;
+        }
+
+        public void Update()
+        {
+            position.X += 2f;
         }
 
         public float DistanceTo(Vector2f otherPosition)
