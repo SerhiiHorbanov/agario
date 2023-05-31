@@ -1,6 +1,5 @@
 ﻿using SFML.System;
 using SFML.Graphics;
-using Agario.States;
 using Agario.GameObjects;
 using Agario.GameObjects.Interfaces;
 

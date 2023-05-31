@@ -14,9 +14,6 @@ namespace Agario.States
 
         List<GameObject> gameObjects = new List<GameObject>();
         public List<int> gameObjectsToDestroy = new List<int>();
-        Blob playerBlob;
-
-        Vector2f playerMoveInput = new Vector2f();
 
         private int startPlayerCount = 100;
         private int foodCount = 500;
@@ -34,8 +31,8 @@ namespace Agario.States
             if (startPlayerCount <= 0)
                 return;
 
-            playerBlob = NewPlayer(false);
-            gameObjects.Add(playerBlob);
+            Player.blob = NewPlayer(false);
+            gameObjects.Add(Player.blob);
 
             for (int i = 1; i < startPlayerCount; i++)
                 gameObjects.Add(NewPlayer(true));
@@ -53,11 +50,6 @@ namespace Agario.States
                     UpdateBlob((Blob)gameObject);
                 }
             }
-
-            if (InputVars.teleportBind.isKeyActive)
-                playerBlob.RandomTeleport();
-
-            playerBlob.Go(playerMoveInput);
 
             CheckGameObjectsToDestroy();
         }
@@ -94,7 +86,7 @@ namespace Agario.States
 
         public override void Render()
         {
-            Camera.position = playerBlob.position;
+            Camera.position = Player.blob.position;
             Camera.Render(gameObjects);
         }
 
@@ -102,7 +94,7 @@ namespace Agario.States
         {
             AgarioGame.window.DispatchEvents();
 
-            playerMoveInput = ((Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2))) * InputVars.moveMultiplayer;
+            InputVars.playerBlobMove = ((Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2))) * InputVars.moveMultiplayer;
 
             InputVars.teleportBind.isKeyActive = Keyboard.IsKeyPressed(InputVars.teleportBind.key);
         }

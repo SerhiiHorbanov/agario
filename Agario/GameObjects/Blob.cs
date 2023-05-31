@@ -88,7 +88,11 @@ namespace Agario.GameObjects
         public void Update()
         {
             if (!isAI)
+            {
+                Player.ControlBlob();
                 return;
+            }
+
             //робити щось ШІшне
         }
 
