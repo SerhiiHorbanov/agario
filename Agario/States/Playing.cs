@@ -12,6 +12,7 @@ namespace Agario.States
         public static Vector2f mapSize = new Vector2f(5000, 5000);
 
         List<GameObject> gameObjects = new List<GameObject>();
+        public List<int> gameObjectsToDestroy = new List<int>();
         Blob playerBlob;
 
         Vector2f playerMoveInput = new Vector2f();
@@ -42,10 +43,49 @@ namespace Agario.States
         public override void Update()
         {
             foreach (GameObject gameObject in gameObjects)
+            {
                 if (gameObject is IUpdateable updateable)
                     updateable.Update();
 
+                if (gameObject is Blob)
+                {
+                    UpdateBlob((Blob)gameObject);
+                }
+            }
+
             playerBlob.Go(playerMoveInput);
+
+            CheckGameObjectsToDestroy();
+        }
+
+        private void UpdateBlob(Blob blob)
+        {
+            for (int j = 0; j < gameObjects.Count; j++)
+            {
+                GameObject gameObject = gameObjects[j];
+
+                if (!gameObject.ToDestroy)
+                {
+                    if (gameObject is Blob)
+                        blob.TryEat((Blob)gameObject);
+
+                    else if (gameObject is Food)
+                        blob.TryEat((Food)gameObject);
+                }
+            }
+        }
+
+        private void CheckGameObjectsToDestroy()
+        {
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObject gameObject = gameObjects[i];
+                if (gameObject.ToDestroy)
+                {
+                    gameObjects.RemoveAt(i);
+                    i--;
+                }
+            }
         }
 
         public override void Render()
@@ -60,7 +100,6 @@ namespace Agario.States
 
             playerMoveInput = (Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2));
             playerMoveInput = playerMoveInput / 10;
-            Console.WriteLine(playerMoveInput.ToString());
         }
 
         public static Vector2f GetRandomPointInsideMap()
@@ -76,7 +115,7 @@ namespace Agario.States
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Blob(position, 5, color, isAi);
+            return new Blob(position, 5, color, isAi, gameObjects);
         }
 
         public Food NewFood()

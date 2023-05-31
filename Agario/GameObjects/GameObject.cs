@@ -8,6 +8,6 @@ namespace Agario.GameObjects
 {
     abstract class GameObject
     {
-        
+        public bool ToDestroy;
     }
 }

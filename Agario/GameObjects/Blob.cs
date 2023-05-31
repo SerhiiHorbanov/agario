@@ -11,7 +11,9 @@ namespace Agario.GameObjects
 
         private float mass;
 
-        public const float MoveSpeed = 25;
+        public List<GameObject> gameObjects;
+
+        public const float MoveSpeed = 50;
 
         public float Mass
         {
@@ -32,13 +34,14 @@ namespace Agario.GameObjects
             }
         }
 
-        public Blob(Vector2f position, int mass, Color color, bool isAi)
+        public Blob(Vector2f position, int mass, Color color, bool isAi, List<GameObject> gameObjects)
         {
             this.position = position;
             this.isAI = isAi;
             Mass = mass;
             shape = new CircleShape(Radius);
             shape.FillColor = color;
+            this.gameObjects = gameObjects;
         }
 
         public void Go(Vector2f Move)
@@ -52,36 +55,36 @@ namespace Agario.GameObjects
             position += Move;
         }
 
-        public bool TryEat(Food food)
+        public void TryEat(Food food)
         {
             if (DistanceTo(food.position) > radius - Food.radius)
-                return false;
+                return;
             Mass++;
             shape.Radius = Radius;
-            return true;
+            food.ToDestroy = true;
         }
 
-        public bool TryEat(Blob player)
+        public void TryEat(Blob blob)
         {
-            if (player == this)
-                return false;
+            if (blob == this)
+                return;
 
-            if (player.mass > mass * 0.95)
+            if (blob.mass > mass * 0.95)
+                return;
 
-                if (DistanceTo(player.position) > radius - player.radius)
-                    return false;
+            if (DistanceTo(blob.position) > radius - blob.radius)
+                return;
 
-            Mass += player.mass;
+            Mass += blob.mass;
             shape.Radius = radius;
-
-            return true;
+            blob.ToDestroy = true;
         }
 
         public void Update()
         {
-            if (isAI)
+            if (!isAI)
                 return;
-
+            //робити щось ШІшне
         }
 
         public float DistanceTo(Vector2f otherPosition)
