@@ -80,6 +80,11 @@ namespace Agario.GameObjects
             blob.ToDestroy = true;
         }
 
+        public void RandomTeleport()
+        {
+            position = Playing.GetRandomPointInsideMap();
+        }
+
         public void Update()
         {
             if (!isAI)

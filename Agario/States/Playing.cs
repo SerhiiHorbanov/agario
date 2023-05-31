@@ -53,6 +53,9 @@ namespace Agario.States
                 }
             }
 
+            if (InputVars.isTeleporting)
+                playerBlob.RandomTeleport();
+
             playerBlob.Go(playerMoveInput);
 
             CheckGameObjectsToDestroy();
@@ -98,8 +101,9 @@ namespace Agario.States
         {
             AgarioGame.window.DispatchEvents();
 
-            playerMoveInput = (Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2));
-            playerMoveInput = playerMoveInput / 10;
+            playerMoveInput = ((Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2))) * InputVars.moveMultiplayer;
+
+            InputVars.isTeleporting = Keyboard.IsKeyPressed(InputVars.TeleportKey);
         }
 
         public static Vector2f GetRandomPointInsideMap()
