@@ -4,6 +4,7 @@ using SFML.Graphics;
 using SFML.Window;
 using Agario.GameObjects;
 using Agario.GameObjects.Interfaces;
+using Agario.Input;
 
 namespace Agario.States
 {
@@ -53,7 +54,7 @@ namespace Agario.States
                 }
             }
 
-            if (InputVars.isTeleporting)
+            if (InputVars.teleportBind.isKeyActive)
                 playerBlob.RandomTeleport();
 
             playerBlob.Go(playerMoveInput);
@@ -103,7 +104,7 @@ namespace Agario.States
 
             playerMoveInput = ((Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2))) * InputVars.moveMultiplayer;
 
-            InputVars.isTeleporting = Keyboard.IsKeyPressed(InputVars.TeleportKey);
+            InputVars.teleportBind.isKeyActive = Keyboard.IsKeyPressed(InputVars.teleportBind.key);
         }
 
         public static Vector2f GetRandomPointInsideMap()

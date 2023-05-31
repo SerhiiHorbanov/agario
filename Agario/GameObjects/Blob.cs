@@ -34,10 +34,10 @@ namespace Agario.GameObjects
             }
         }
 
-        public Blob(Vector2f position, int mass, Color color, bool isAi, List<GameObject> gameObjects)
+        public Blob(Vector2f position, int mass, Color color, bool isAI, List<GameObject> gameObjects)
         {
             this.position = position;
-            this.isAI = isAi;
+            this.isAI = isAI;
             Mass = mass;
             shape = new CircleShape(Radius);
             shape.FillColor = color;
