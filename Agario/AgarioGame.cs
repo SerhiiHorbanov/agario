@@ -8,11 +8,11 @@ namespace /*it's a me, */Agario
     class AgarioGame : Game
     {
         public static Random random = new Random();
-        public static RenderWindow window = new RenderWindow(new VideoMode(500, 500), "Agario");
+        public static RenderWindow window = new RenderWindow(new VideoMode(750, 750), "Agario");
 
         protected override void SetStartingState()
         {
-            stateMachine.SetState(new Playing(stateMachine, 100, 500));
+            stateMachine.SetState(new Playing(stateMachine));
         }
     }
 }

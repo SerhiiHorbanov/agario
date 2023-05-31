@@ -1,6 +1,7 @@
 ﻿using Engine;
 using SFML.System;
 using SFML.Graphics;
+using SFML.Window;
 using Agario.GameObjects;
 using Agario.GameObjects.Interfaces;
 
@@ -13,33 +14,29 @@ namespace Agario.States
         List<GameObject> gameObjects = new List<GameObject>();
         Blob playerBlob;
 
-        public Playing(StateMachine stateMachine, int playerCount, int foodCount) : base(stateMachine)
+        Vector2f playerMoveInput = new Vector2f();
+
+        private int startPlayerCount = 100;
+        private int foodCount = 500;
+
+        public Playing(StateMachine stateMachine) : base(stateMachine)
         {
             this.stateMachine = stateMachine;
-
-            CreateFoodAndPlayers(playerCount, foodCount);
-
-            if (playerCount <= 0)
-                return;
-
-            GameObject firstCreatedBlob = gameObjects[foodCount];
-
-            if (firstCreatedBlob is Blob)
-                playerBlob = (Blob)firstCreatedBlob;
         }
 
-        public void CreateFoodAndPlayers(int playerCount, int foodCount)
+        public override void Initialize()
         {
             for (int i = 0; i < foodCount; i++)
                 gameObjects.Add(NewFood());
 
-            if (playerCount <= 0)
+            if (startPlayerCount <= 0)
                 return;
 
-            for (int i = 0; i < playerCount; i++)
-                gameObjects.Add(NewPlayer());
+            playerBlob = NewPlayer(false);
+            gameObjects.Add(playerBlob);
 
-
+            for (int i = 1; i < startPlayerCount; i++)
+                gameObjects.Add(NewPlayer(true));
         }
 
         public override void Update()
@@ -47,6 +44,8 @@ namespace Agario.States
             foreach (GameObject gameObject in gameObjects)
                 if (gameObject is IUpdateable updateable)
                     updateable.Update();
+
+            playerBlob.Go(playerMoveInput);
         }
 
         public override void Render()
@@ -58,6 +57,10 @@ namespace Agario.States
         public override void Input()
         {
             AgarioGame.window.DispatchEvents();
+
+            playerMoveInput = (Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2));
+            playerMoveInput = playerMoveInput / 10;
+            Console.WriteLine(playerMoveInput.ToString());
         }
 
         public static Vector2f GetRandomPointInsideMap()
@@ -67,13 +70,13 @@ namespace Agario.States
             return new Vector2f(x, y);
         }
 
-        public Blob NewPlayer()
+        public Blob NewPlayer(bool isAi)
         {
             Vector2f position = GetRandomPointInsideMap();
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Blob(position, 1, color, true);
+            return new Blob(position, 5, color, isAi);
         }
 
         public Food NewFood()

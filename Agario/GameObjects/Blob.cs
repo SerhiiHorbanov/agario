@@ -11,6 +11,8 @@ namespace Agario.GameObjects
 
         private float mass;
 
+        public const float MoveSpeed = 25;
+
         public float Mass
         {
             get { return mass; }
@@ -39,9 +41,15 @@ namespace Agario.GameObjects
             shape.FillColor = color;
         }
 
-        public void Move(Vector2f move)
+        public void Go(Vector2f Move)
         {
-            position += move;
+            float MoveLenght = (float)Math.Sqrt((Move.X * Move.X) + (Move.Y * Move.Y));
+            if (MoveLenght > MoveSpeed / mass)
+            {
+                Move.X = Move.X / MoveLenght * MoveSpeed / mass;
+                Move.Y = Move.Y / MoveLenght * MoveSpeed / mass;
+            }
+            position += Move;
         }
 
         public bool TryEat(Food food)

@@ -13,6 +13,7 @@ namespace Agario.GameObjects
             shape = new CircleShape(radius);
             shape.FillColor = color;
             shape.Position = position;
+            base.radius = radius;
         }
     }
 }
