@@ -58,31 +58,9 @@ namespace Agario.States
             {
                 if (gameObject is IUpdateable updateable)
                     updateable.Update();
-
-                if (gameObject is Blob)
-                {
-                    UpdateBlob((Blob)gameObject);
-                }
             }
 
             CheckGameObjectsToDestroy();
-        }
-
-        private void UpdateBlob(Blob blob)
-        {
-            for (int j = 0; j < gameObjects.Count; j++)
-            {
-                GameObject gameObject = gameObjects[j];
-
-                if (!gameObject.ToDestroy)
-                {
-                    if (gameObject is Blob)
-                        blob.TryEat((Blob)gameObject);
-
-                    else if (gameObject is Food)
-                        blob.TryEat((Food)gameObject);
-                }
-            }
         }
 
         private void CheckGameObjectsToDestroy()
@@ -108,10 +86,10 @@ namespace Agario.States
         {
             AgarioGame.window.DispatchEvents();
 
-
-            input.SetVector("move", (Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2)));
-
-            input.SetKeyPress("teleport", Keyboard.IsKeyPressed(input.GetKey("teleport")));
+            if (playerBlob.controller is PlayerController)
+            {
+                ((PlayerController)playerBlob.controller).CheckInput();
+            }
         }
 
         public static Vector2f GetRandomPointInsideMap()

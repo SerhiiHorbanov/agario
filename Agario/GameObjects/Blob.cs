@@ -67,7 +67,24 @@ namespace Agario.GameObjects
             position += Move;
         }
 
-        public void TryEat(Food food)
+        private void CheckEating()
+        {
+            for (int j = 0; j < gameObjects.Count; j++)
+            {
+                GameObject gameObject = gameObjects[j];
+
+                if (!gameObject.ToDestroy)
+                {
+                    if (gameObject is Blob)
+                        TryEat((Blob)gameObject);
+
+                    else if (gameObject is Food)
+                        TryEat((Food)gameObject);
+                }
+            }
+        }
+
+        private void TryEat(Food food)
         {
             if (position.DistanceTo(food.position) > radius - Food.radius)
                 return;
@@ -76,7 +93,7 @@ namespace Agario.GameObjects
             food.ToDestroy = true;
         }
 
-        public void TryEat(Blob blob)
+        private void TryEat(Blob blob)
         {
             if (blob == this)
                 return;
@@ -99,6 +116,8 @@ namespace Agario.GameObjects
 
         public void Update()
         {
+            CheckEating();
+
             controller.ControlBlob();
         }
     }

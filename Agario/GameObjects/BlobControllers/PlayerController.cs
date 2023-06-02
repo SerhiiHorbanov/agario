@@ -1,5 +1,7 @@
 ﻿using Agario.GameObjects;
 using Agario.Input;
+using SFML.Window;
+using SFML.System;
 
 namespace Agario.GameObjects.BlobControllers
 {
@@ -11,6 +13,13 @@ namespace Agario.GameObjects.BlobControllers
         {
             this.blob = blob;
             this.input = input;
+        }
+
+        public void CheckInput()
+        {
+            input.SetVector("move", (Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2)));
+
+            input.SetKeyPress("teleport", Keyboard.IsKeyPressed(input.GetKey("teleport")));
         }
 
         public override void ControlBlob()
