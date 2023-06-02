@@ -1,4 +1,4 @@
-﻿using SFML.System;
+using SFML.System;
 using SFML.Graphics;
 using Agario.States;
 using Agario.GameObjects.Interfaces;
@@ -16,8 +16,6 @@ namespace Agario.GameObjects
         public List<GameObject> gameObjects;
 
         public const float MoveSpeed = 50;
-
-        public const float MinMoveSpeed = 5;
 
         public float Mass
         {
@@ -60,7 +58,7 @@ namespace Agario.GameObjects
 
         public void Go(Vector2f Move)
         {
-            float MoveLenght = (float)Math.Sqrt((Move.X * Move.X) + (Move.Y * Move.Y) + MinMoveSpeed);
+            float MoveLenght = (float)Math.Sqrt((Move.X * Move.X) + (Move.Y * Move.Y));
             if (MoveLenght > MoveSpeed / mass)
             {
                 Move.X = Move.X / MoveLenght * MoveSpeed / mass;
@@ -71,7 +69,7 @@ namespace Agario.GameObjects
 
         public void TryEat(Food food)
         {
-            if (DistanceTo(food.position) > radius - Food.radius)
+            if (position.DistanceTo(food.position) > radius - Food.radius)
                 return;
             Mass++;
             shape.Radius = Radius;
@@ -86,7 +84,7 @@ namespace Agario.GameObjects
             if (blob.mass > mass * 0.95)
                 return;
 
-            if (DistanceTo(blob.position) > radius - blob.radius)
+            if (position.DistanceTo(blob.position) > radius - blob.radius)
                 return;
 
             Mass += blob.mass;
@@ -102,15 +100,6 @@ namespace Agario.GameObjects
         public void Update()
         {
             controller.ControlBlob();
-        }
-
-        public float DistanceTo(Vector2f otherPosition)
-        {
-            float differenceX = position.X - otherPosition.X;
-            float differenceY = position.Y - otherPosition.Y;
-
-            float distanceToOtherPosition = (float)Math.Sqrt(differenceX * differenceX + differenceY * differenceY);
-            return distanceToOtherPosition;
         }
     }
 }

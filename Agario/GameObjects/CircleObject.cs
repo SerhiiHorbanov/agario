@@ -16,10 +16,7 @@ namespace Agario.GameObjects
             float clampedX = Math.Clamp(position.X, Camera.Left, Camera.Right);
             float clampedY = Math.Clamp(position.Y, Camera.Top, Camera.Bottom);
 
-            float differenceX = position.X - clampedX;
-            float differenceY = position.Y - clampedY;
-
-            float distanceToCamera = (float)Math.Sqrt((differenceX * differenceX) + (differenceY * differenceY));
+            float distanceToCamera = position.DistanceTo(new Vector2f(clampedX, clampedY));
 
             if (distanceToCamera < radius)
                 Render();
