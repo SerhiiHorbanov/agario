@@ -2,18 +2,22 @@
 using SFML.Graphics;
 using Agario.States;
 using Agario.GameObjects.Interfaces;
+using Agario.GameObjects.BlobControllers;
+using Agario.Input;
 
 namespace Agario.GameObjects
 {
     class Blob : CircleObject, IUpdateable
     {
-        public bool isAI { get; private set; }
+        public BlobController controller;
 
         private float mass;
 
         public List<GameObject> gameObjects;
 
         public const float MoveSpeed = 50;
+
+        public const float MinMoveSpeed = 5;
 
         public float Mass
         {
@@ -34,10 +38,20 @@ namespace Agario.GameObjects
             }
         }
 
-        public Blob(Vector2f position, int mass, Color color, bool isAI, List<GameObject> gameObjects)
+        public Blob(Vector2f position, int mass, Color color, List<GameObject> gameObjects)//вибачте, я не знаю  як краще, АААААААААААААА
         {
             this.position = position;
-            this.isAI = isAI;
+            this.controller = new AIController(this);
+            Mass = mass;
+            shape = new CircleShape(Radius);
+            shape.FillColor = color;
+            this.gameObjects = gameObjects;
+        }
+
+        public Blob(Vector2f position, int mass, Color color, List<GameObject> gameObjects, PlayerInput input)
+        {
+            this.position = position;
+            this.controller = new PlayerController(this, input);
             Mass = mass;
             shape = new CircleShape(Radius);
             shape.FillColor = color;
@@ -46,7 +60,7 @@ namespace Agario.GameObjects
 
         public void Go(Vector2f Move)
         {
-            float MoveLenght = (float)Math.Sqrt((Move.X * Move.X) + (Move.Y * Move.Y));
+            float MoveLenght = (float)Math.Sqrt((Move.X * Move.X) + (Move.Y * Move.Y) + MinMoveSpeed);
             if (MoveLenght > MoveSpeed / mass)
             {
                 Move.X = Move.X / MoveLenght * MoveSpeed / mass;
@@ -87,13 +101,7 @@ namespace Agario.GameObjects
 
         public void Update()
         {
-            if (!isAI)
-            {
-                Player.ControlBlob();
-                return;
-            }
-
-            //робити щось ШІшне
+            controller.ControlBlob();
         }
 
         public float DistanceTo(Vector2f otherPosition)

@@ -5,12 +5,25 @@ using SFML.Window;
 using Agario.GameObjects;
 using Agario.GameObjects.Interfaces;
 using Agario.Input;
+using Agario.GameObjects.BlobControllers;
 
 namespace Agario.States
 {
     class Playing : State
     {
         public static Vector2f mapSize = new Vector2f(5000, 5000);
+
+        PlayerInput input = new PlayerInput(
+            new Dictionary<string, KeyBind> 
+            {
+                { "teleport", new KeyBind(Keyboard.Key.E)}
+            },
+            new Dictionary<string, Vector2f>
+            {
+                { "move", new Vector2f(0, 0) }
+            });
+
+        Blob playerBlob;
 
         List<GameObject> gameObjects = new List<GameObject>();
         public List<int> gameObjectsToDestroy = new List<int>();
@@ -31,8 +44,9 @@ namespace Agario.States
             if (startPlayerCount <= 0)
                 return;
 
-            Player.blob = NewPlayer(false);
-            gameObjects.Add(Player.blob);
+            playerBlob = NewPlayer(false);
+
+            gameObjects.Add(playerBlob);
 
             for (int i = 1; i < startPlayerCount; i++)
                 gameObjects.Add(NewPlayer(true));
@@ -86,7 +100,7 @@ namespace Agario.States
 
         public override void Render()
         {
-            Camera.position = Player.blob.position;
+            Camera.position = playerBlob.position;
             Camera.Render(gameObjects);
         }
 
@@ -94,9 +108,10 @@ namespace Agario.States
         {
             AgarioGame.window.DispatchEvents();
 
-            InputVars.playerBlobMove = ((Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2))) * InputVars.moveMultiplayer;
 
-            InputVars.teleportBind.isKeyActive = Keyboard.IsKeyPressed(InputVars.teleportBind.key);
+            input.SetVector("move", (Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2)));
+
+            input.SetKeyPress("teleport", Keyboard.IsKeyPressed(input.GetKey("teleport")));
         }
 
         public static Vector2f GetRandomPointInsideMap()
@@ -109,10 +124,14 @@ namespace Agario.States
         public Blob NewPlayer(bool isAi)
         {
             Vector2f position = GetRandomPointInsideMap();
+
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Blob(position, 5, color, isAi, gameObjects);
+
+            if (isAi)
+                return new Blob(position, 5, color, gameObjects);
+            return new Blob(position, 5, color, gameObjects, input);
         }
 
         public Food NewFood()
