@@ -13,9 +13,7 @@ namespace Agario.States
     {
         public static Vector2f mapSize = new Vector2f(5000, 5000);
 
-        PlayerInput input = new PlayerInput()
-            .AddBinding("teleport", Keyboard.Key.E)
-            .AddVector2("move");
+        PlayerInput input = new PlayerInput();
 
         Blob playerBlob;
 
@@ -32,6 +30,10 @@ namespace Agario.States
 
         public override void Initialize()
         {
+
+            input.AddBinding("teleport", Keyboard.Key.E);
+            input.AddVector2("move");
+
             for (int i = 0; i < foodCount; i++)
                 gameObjects.Add(NewFood());
 
