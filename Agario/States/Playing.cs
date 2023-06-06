@@ -86,9 +86,11 @@ namespace Agario.States
         {
             AgarioGame.window.DispatchEvents();
 
+            input.GetKeyInputInput();
+
             if (playerBlob.controller is PlayerController)
             {
-                ((PlayerController)playerBlob.controller).CheckInput();
+                ((PlayerController)playerBlob.controller).CheckMoveInput();
             }
         }
 

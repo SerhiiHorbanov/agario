@@ -11,10 +11,5 @@ namespace Agario.Input
         {
             this.key = key;
         }
-
-        /*public void SetKey(Keyboard.Key key)
-            => this.key = key;
-        public void SetIsKeyActive(bool isActive)
-            => this.isActive = isActive;*/
     }
 }

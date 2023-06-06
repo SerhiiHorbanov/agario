@@ -15,11 +15,9 @@ namespace Agario.GameObjects.BlobControllers
             this.input = input;
         }
 
-        public void CheckInput()
+        public void CheckMoveInput()
         {
             input.SetVector("move", (Vector2f)(Mouse.GetPosition(AgarioGame.window) - (Vector2i)(AgarioGame.window.Size / 2)));
-
-            input.SetKeyPress("teleport", Keyboard.IsKeyPressed(input.GetKey("teleport")));
         }
 
         public override void ControlBlob()

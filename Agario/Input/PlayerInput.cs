@@ -36,5 +36,10 @@ namespace Agario.Input
         public void SetKeyPress(string keyBindName, bool isPressed)
             => inputKeys[keyBindName].isPressed = isPressed;
 
+        public void GetKeyInputInput()
+        {
+            foreach (KeyBind keyBind in inputKeys.Values)
+                keyBind.isPressed = Keyboard.IsKeyPressed(keyBind.key);
+        }
     }
 }
