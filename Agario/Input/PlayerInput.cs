@@ -9,12 +9,6 @@ namespace Agario.Input
 
         private Dictionary<string, Vector2f> inputVectors;
 
-        public PlayerInput(Dictionary<string, KeyBind> inputKeyBinds, Dictionary<string, Vector2f> inputVectors)
-        {
-            this.inputKeys = inputKeyBinds;
-            this.inputVectors = inputVectors;
-        }
-
         public Vector2f GetVector(string vectorName)
             => inputVectors[vectorName];
 
@@ -35,6 +29,12 @@ namespace Agario.Input
 
         public void SetKeyPress(string keyBindName, bool isPressed)
             => inputKeys[keyBindName].isPressed = isPressed;
+
+        public void AddBinding(string name, Keyboard.Key key)
+            => inputKeys.Add(name, new KeyBind(key));
+
+        public void AddVector2(string name)
+            => inputVectors.Add(name, new Vector2f());
 
         public void GetKeyInputInput()
         {

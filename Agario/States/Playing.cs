@@ -13,15 +13,9 @@ namespace Agario.States
     {
         public static Vector2f mapSize = new Vector2f(5000, 5000);
 
-        PlayerInput input = new PlayerInput(
-            new Dictionary<string, KeyBind> 
-            {
-                { "teleport", new KeyBind(Keyboard.Key.E)}
-            },
-            new Dictionary<string, Vector2f>
-            {
-                { "move", new Vector2f(0, 0) }
-            });
+        PlayerInput input = new PlayerInput()
+            .AddBinding("teleport", Keyboard.Key.E)
+            .AddVector2("move");
 
         Blob playerBlob;
 
