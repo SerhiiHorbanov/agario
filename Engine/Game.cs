@@ -2,25 +2,26 @@
 {
     public abstract class Game
     {
-        public StateMachine stateMachine;
+        public State state;
 
         public bool continuePlaying = true;
-
-        public Game()
-        {
-            stateMachine = new StateMachine();
-        }
 
         public void Run()
         {
             SetStartingState();
             while (continuePlaying)
             {
-                stateMachine.Update();
-                stateMachine.Render();
-                stateMachine.Input();
-                stateMachine.Timing();
+                state.Update();
+                state.Render();
+                state.Input();
+                state.Timing();
             }
+        }
+
+        public void SetState(State state)
+        {
+            this.state = state;
+            this.state.Initialize();
         }
 
         protected abstract void SetStartingState();

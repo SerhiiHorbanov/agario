@@ -5,9 +5,9 @@ namespace Agario.Input
 {
     class PlayerInput
     {
-        private Dictionary<string, KeyBind> inputKeys;
+        private Dictionary<string, KeyBind> inputKeys = new Dictionary<string, KeyBind>();
 
-        private Dictionary<string, Vector2f> inputVectors;
+        private Dictionary<string, Vector2f> inputVectors = new Dictionary<string, Vector2f>();
 
         public Vector2f GetVector(string vectorName)
             => inputVectors[vectorName];

@@ -7,7 +7,7 @@ namespace Agario.GameObjects
     abstract class CircleObject : GameObject, IRenderable
     {
         public Vector2f position { get; protected set; }
-        protected CircleShape shape = new CircleShape();
+        public CircleShape shape { get; protected set; }
 
         protected float radius;
 

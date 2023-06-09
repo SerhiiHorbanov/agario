@@ -1,12 +1,19 @@
-﻿namespace Engine
+﻿using System;
+
+namespace Engine
 {
     public abstract class State
     {
-        protected StateMachine stateMachine;
+        private long ticksBetweenFrames = TimeSpan.TicksPerSecond / 60;
 
-        public State(StateMachine stateMachine)
+        public long lastTimingTick = DateTime.Now.Ticks;
+
+        public long neededFPS
         {
-            this.stateMachine = stateMachine;
+            get
+               => TimeSpan.TicksPerSecond / ticksBetweenFrames;
+            set
+               => ticksBetweenFrames = TimeSpan.TicksPerSecond / neededFPS;
         }
 
         public virtual void Initialize()
@@ -16,5 +23,14 @@
         public abstract void Update();
         public abstract void Render();
         public abstract void Input();
+        public void Timing()
+        {
+            if (DateTime.Now.Ticks - lastTimingTick < ticksBetweenFrames)
+            {
+                int timeToSleep = (int)((ticksBetweenFrames - (DateTime.Now.Ticks - lastTimingTick)) / TimeSpan.TicksPerMillisecond);
+                System.Threading.Thread.Sleep(timeToSleep);
+            }
+            lastTimingTick = DateTime.Now.Ticks;
+        }
     }
 }
