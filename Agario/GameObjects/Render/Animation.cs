@@ -3,21 +3,21 @@ using SFML.Graphics;
 
 namespace Agario.GameObjects.Render
 {
-    class Animation
+    class Animation : AgarioSprite
     {
         Texture[] frames;
 
         public int frameToRender = 0;
         public bool paused = false;
 
-        public AgarioSprite sprite;
-
         public Animation(Texture[] frames, Vector2f position, int frameToRender = 0, bool paused = false, bool toRender = true)
         {
             this.frames = frames;
             this.frameToRender = frameToRender;
             this.paused = paused;
-            sprite = new AgarioSprite(position, frames[frameToRender], toRender);
+            this.position = position;
+            this.sprite = new Sprite(frames[frameToRender]);
+            this.toRender = toRender;
         }
 
         public Animation(Animation animatedSprite)
@@ -29,7 +29,9 @@ namespace Agario.GameObjects.Render
             }
             frameToRender = animatedSprite.frameToRender;
             paused = animatedSprite.paused;
-            sprite = new AgarioSprite(animatedSprite.sprite);
+            sprite = new Sprite(animatedSprite.sprite);
+            position = animatedSprite.position;
+            toRender = animatedSprite.toRender;
         }
 
         public static Animation newAnimation(string[] framesPaths, bool toRender = true, Vector2f position = new Vector2f(), int frameToRender = 0, bool paused = false)
@@ -49,16 +51,16 @@ namespace Agario.GameObjects.Render
             return animatedSprite;
         }
 
-        public void TryRender(Camera camera)
+        public override void TryRender(Camera camera)
         {
-            sprite.sprite.Texture = frames[frameToRender];
+            sprite.Texture = frames[frameToRender];
 
-            sprite.TryRender(camera);
+            base.TryRender(camera);
 
             bool isLastFrame = frameToRender == frames.Length - 1;
 
             if (isLastFrame)
-                sprite.toRender = false;
+                toRender = false;
 
             if (!paused && !isLastFrame)
                 frameToRender++;
@@ -67,7 +69,7 @@ namespace Agario.GameObjects.Render
         public void Start()
         {
             frameToRender = 0;
-            sprite.toRender = true;
+            toRender = true;
             paused = false;
         }
     }

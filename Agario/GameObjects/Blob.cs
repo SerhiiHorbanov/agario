@@ -111,7 +111,7 @@ namespace Agario.GameObjects
 
         private void StartTeleportationAnimation()
         {
-            teleportationAnimation.sprite.position = position;
+            teleportationAnimation.position = position;
             teleportationAnimation.Start();
         }
 
