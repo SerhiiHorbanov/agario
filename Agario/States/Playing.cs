@@ -1,4 +1,4 @@
-﻿using Engine;
+using Engine;
 using SFML.System;
 using SFML.Graphics;
 using SFML.Window;
@@ -12,6 +12,8 @@ namespace Agario.States
     class Playing : State
     {
         public static Vector2f mapSize = new Vector2f(5000, 5000);
+
+        Camera camera = new Camera();
 
         PlayerInput input = new PlayerInput();
 
@@ -75,8 +77,8 @@ namespace Agario.States
 
         public override void Render()
         {
-            Camera.position = playerBlob.position;
-            Camera.Render(gameObjects);
+            camera.center = playerBlob.position;
+            camera.Render(gameObjects);
         }
 
         public override void Input()
@@ -107,8 +109,8 @@ namespace Agario.States
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
 
             if (isAi)
-                return new Blob(position, 5, color, gameObjects);
-            return new Blob(position, 5, color, gameObjects, input);
+                return new Blob(position, 5, color, gameObjects, camera);
+            return new Blob(position, 5, color, gameObjects, input, camera);
         }
 
         public Food NewFood()
@@ -117,7 +119,7 @@ namespace Agario.States
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Food(position, color);
+            return new Food(position, color, camera);
         }
     }
 }

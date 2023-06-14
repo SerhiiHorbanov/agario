@@ -1,6 +1,8 @@
 ﻿using SFML.System;
 using SFML.Graphics;
 using Agario.GameObjects.Interfaces;
+using Agario.Extensions;
+using Agario.GameObjects.Render;
 
 namespace Agario.GameObjects
 {
@@ -9,23 +11,34 @@ namespace Agario.GameObjects
         public Vector2f position { get; protected set; }
         public CircleShape shape { get; protected set; }
 
+        public Camera camera;
+
         protected float radius;
+
+
+        public AgarioSprite sprite;
+
 
         public void TryRender()
         {
-            float clampedX = Math.Clamp(position.X, Camera.Left, Camera.Right);
-            float clampedY = Math.Clamp(position.Y, Camera.Top, Camera.Bottom);
+            float clampedX = Math.Clamp(position.X, camera.rectangle.Left, camera.rectangle.Left + camera.rectangle.Width);
+            float clampedY = Math.Clamp(position.Y, camera.rectangle.Top, camera.rectangle.Top + camera.rectangle.Height);
 
-            float distanceToCamera = position.DistanceTo(new Vector2f(clampedX, clampedY));
+            float distanceToCamera = position.Distance(new Vector2f(clampedX, clampedY));
 
             if (distanceToCamera < radius)
                 Render();
+
+
+            if (sprite is null)
+                return;
+            sprite.TryRender(camera);
         }
 
-        void Render()
+        virtual public void Render()
         {
             shape.Radius = radius;
-            shape.Position = position - Camera.position - new Vector2f(radius, radius) + (new Vector2f(Camera.cameraSize.X, Camera.cameraSize.Y) * 0.5f);
+            shape.Position = position - camera.center - new Vector2f(radius, radius) + (new Vector2f(Camera.cameraSize.X, Camera.cameraSize.Y) * 0.5f);
             AgarioGame.window.Draw(shape);
         }
     }

@@ -6,22 +6,19 @@ using Agario.GameObjects.Interfaces;
 
 namespace Agario
 {
-    static class Camera
+    class Camera
     {
-        public static Vector2f position;
+        public FloatRect rectangle = new FloatRect();
+        public Vector2f center;
         public static Vector2f cameraSize => (Vector2f)AgarioGame.window.Size;
 
-        public static float Left
-            => position.X - (cameraSize.X / 2);
-        public static float Right
-            => position.X + (cameraSize.X / 2);
-        public static float Top
-            => position.Y - (cameraSize.Y / 2);
-        public static float Bottom
-            => position.Y + (cameraSize.Y / 2);
-
-        public static void Render(List<GameObject> gameObjects)
+        public void Render(List<GameObject> gameObjects)
         {
+            rectangle.Left = center.X - cameraSize.X * 0.5f;
+            rectangle.Top = center.Y - cameraSize.Y * 0.5f;
+            rectangle.Width = cameraSize.X;
+            rectangle.Height = cameraSize.Y;
+
             AgarioGame.window.Clear(Color.Black);
 
             foreach (GameObject gameObject in gameObjects)

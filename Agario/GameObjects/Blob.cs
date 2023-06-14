@@ -4,6 +4,8 @@ using Agario.States;
 using Agario.GameObjects.Interfaces;
 using Agario.GameObjects.BlobControllers;
 using Agario.Input;
+using Agario.Extensions;
+using Agario.GameObjects.Render;
 
 namespace Agario.GameObjects
 {
@@ -36,7 +38,7 @@ namespace Agario.GameObjects
             }
         }
 
-        public Blob(Vector2f position, int mass, Color color, List<GameObject> gameObjects)//вибачте, я не знаю  як краще, АААААААААААААА
+        public Blob(Vector2f position, int mass, Color color, List<GameObject> gameObjects, Camera camera)
         {
             this.position = position;
             this.controller = new AIController(this);
@@ -44,9 +46,10 @@ namespace Agario.GameObjects
             shape = new CircleShape(Radius);
             shape.FillColor = color;
             this.gameObjects = gameObjects;
+            this.camera = camera;
         }
 
-        public Blob(Vector2f position, int mass, Color color, List<GameObject> gameObjects, PlayerInput input)
+        public Blob(Vector2f position, int mass, Color color, List<GameObject> gameObjects, PlayerInput input, Camera camera)
         {
             this.position = position;
             this.controller = new PlayerController(this, input);
@@ -54,6 +57,7 @@ namespace Agario.GameObjects
             shape = new CircleShape(Radius);
             shape.FillColor = color;
             this.gameObjects = gameObjects;
+            this.camera = camera;
         }
 
         public void Go(Vector2f Move)
@@ -76,37 +80,12 @@ namespace Agario.GameObjects
                 if (!gameObject.ToDestroy)
                 {
                     if (gameObject is Blob)
-                        TryEat((Blob)gameObject);
+                        this.TryEat((Blob)gameObject);
 
-                    else if (gameObject is Food)
-                        TryEat((Food)gameObject);
+                    if (gameObject is Food)
+                        this.TryEat((Food)gameObject);
                 }
             }
-        }
-
-        private void TryEat(Food food)
-        {
-            if (position.DistanceTo(food.position) > radius - Food.radius)
-                return;
-            Mass++;
-            shape.Radius = Radius;
-            food.ToDestroy = true;
-        }
-
-        private void TryEat(Blob blob)
-        {
-            if (blob == this)
-                return;
-
-            if (blob.mass > mass * 0.95)
-                return;
-
-            if (position.DistanceTo(blob.position) > radius - blob.radius)
-                return;
-
-            Mass += blob.mass;
-            shape.Radius = radius;
-            blob.ToDestroy = true;
         }
 
         public void RandomTeleport()
@@ -119,6 +98,11 @@ namespace Agario.GameObjects
             CheckEating();
 
             controller.ControlBlob();
+        }
+
+        public override void Render()
+        {
+            base.Render();
         }
     }
 }
