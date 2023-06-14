@@ -43,12 +43,6 @@ namespace Agario.States
 
             for (int i = 1; i < startPlayerCount; i++)
                 gameObjects.Add(NewPlayer(true));
-
-            foreach (GameObject gameObject in gameObjects)
-            {
-                string a = AgarioSaveLoad.SerializeGameObject(gameObject);
-                Console.WriteLine(a);
-            }
         }
 
         public override void Update()

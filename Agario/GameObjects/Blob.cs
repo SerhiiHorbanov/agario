@@ -17,7 +17,22 @@ namespace Agario.GameObjects
 
         public List<GameObject> gameObjects;
 
+        public Animation teleportationAnimation = new Animation(standartTeleportationAnimation);
+
         public const float MoveSpeed = 50;
+
+        public const string teleportationAnimationPath = "Textures/Random teleport animation frames";
+
+        public static readonly Animation standartTeleportationAnimation =
+            Animation.newAnimation(
+                new string[5]
+                {
+                    teleportationAnimationPath + "/frame0.png",
+                    teleportationAnimationPath + "/frame1.png",
+                    teleportationAnimationPath + "/frame2.png",
+                    teleportationAnimationPath + "/frame3.png",
+                    teleportationAnimationPath + "/frame4.png"
+                });
 
         public float Mass
         {
@@ -91,6 +106,13 @@ namespace Agario.GameObjects
         public void RandomTeleport()
         {
             position = Playing.GetRandomPointInsideMap();
+            StartTeleportationAnimation();
+        }
+
+        private void StartTeleportationAnimation()
+        {
+            teleportationAnimation.sprite.position = position;
+            teleportationAnimation.Start();
         }
 
         public void Update()
@@ -103,6 +125,7 @@ namespace Agario.GameObjects
         public override void Render()
         {
             base.Render();
+            teleportationAnimation.TryRender(camera);
         }
     }
 }

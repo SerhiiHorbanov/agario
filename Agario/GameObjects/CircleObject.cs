@@ -15,10 +15,6 @@ namespace Agario.GameObjects
 
         protected float radius;
 
-
-        public AgarioSprite sprite;
-
-
         public void TryRender()
         {
             float clampedX = Math.Clamp(position.X, camera.rectangle.Left, camera.rectangle.Left + camera.rectangle.Width);
@@ -28,11 +24,6 @@ namespace Agario.GameObjects
 
             if (distanceToCamera < radius)
                 Render();
-
-
-            if (sprite is null)
-                return;
-            sprite.TryRender(camera);
         }
 
         virtual public void Render()

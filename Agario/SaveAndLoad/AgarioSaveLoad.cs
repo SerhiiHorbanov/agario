@@ -10,7 +10,7 @@ namespace Agario.SaveAndLoad
 {
     static class AgarioSaveLoad
     {
-        public static void SaveGameObjects()
+        /*public static void SaveGameObjects()
         {
 
         }
@@ -79,7 +79,7 @@ namespace Agario.SaveAndLoad
         private static string SerializeVector2f(Vector2f value)
             => $"{value.X},{value.Y}";
         private static string SerializeColor(Color color)
-            => $"{color.R},{color.G},{color.B}";
+            => $"{color.R},{color.G},{color.B}";*/
     }
 }
 
