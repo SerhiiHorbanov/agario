@@ -2,6 +2,6 @@
 {
     interface IRenderable
     {
-        public void TryRender();
+        public void Render();
     }
 }

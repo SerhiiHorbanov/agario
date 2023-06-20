@@ -1,13 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Agario.GameObjects.Interfaces;
 
 namespace Agario.GameObjects
 {
-    abstract class GameObject
+    public abstract class GameObject
     {
         public bool ToDestroy;
+
+        public void TryUpdate()
+        {
+            if (this is IUpdateable updateable)
+                updateable.Update();
+        }
+
+        public void TryRender()
+        {
+            if (this is IRenderable renderable)
+                renderable.Render();
+        }
     }
 }

@@ -17,13 +17,11 @@ namespace Agario.GameObjects
 
         public List<GameObject> gameObjects;
 
-        public Animation teleportationAnimation = new Animation(standartTeleportationAnimation);
-
         public const float MoveSpeed = 50;
 
         public const string teleportationAnimationPath = "Textures/Random teleport animation frames";
 
-        public static readonly Animation standartTeleportationAnimation =
+        public static readonly Animation teleportationAnimation =
             Animation.newAnimation(
                 new string[5]
                 {
@@ -106,13 +104,13 @@ namespace Agario.GameObjects
         public void RandomTeleport()
         {
             position = Playing.GetRandomPointInsideMap();
-            StartTeleportationAnimation();
+            CreateTeleportationAnimation();
         }
 
-        private void StartTeleportationAnimation()
+        private void CreateTeleportationAnimation()
         {
             teleportationAnimation.position = position;
-            teleportationAnimation.Start();
+            gameObjects.Add(new AnimatedObject(new Animation(teleportationAnimation), camera));
         }
 
         public void Update()
@@ -120,12 +118,6 @@ namespace Agario.GameObjects
             CheckEating();
 
             controller.ControlBlob();
-        }
-
-        public override void Render()
-        {
-            base.Render();
-            teleportationAnimation.TryRender(camera);
         }
     }
 }

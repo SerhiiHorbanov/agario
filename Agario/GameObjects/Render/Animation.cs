@@ -10,6 +10,9 @@ namespace Agario.GameObjects.Render
         public int frameToRender = 0;
         public bool paused = false;
 
+        public bool isLastFrame 
+            => frameToRender == frames.Length - 1;
+
         public Animation(Texture[] frames, Vector2f position, int frameToRender = 0, bool paused = false, bool toRender = true)
         {
             this.frames = frames;
@@ -57,7 +60,7 @@ namespace Agario.GameObjects.Render
 
             base.TryRender(camera);
 
-            bool isLastFrame = frameToRender == frames.Length - 1;
+            
 
             if (isLastFrame)
                 toRender = false;

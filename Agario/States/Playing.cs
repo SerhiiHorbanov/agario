@@ -6,6 +6,7 @@ using Agario.GameObjects;
 using Agario.GameObjects.Interfaces;
 using Agario.Input;
 using Agario.GameObjects.BlobControllers;
+using Agario.Extensions;
 
 namespace Agario.States
 {
@@ -47,27 +48,12 @@ namespace Agario.States
 
         public override void Update()
         {
-            foreach (GameObject gameObject in gameObjects)
-            {
-                if (gameObject is IUpdateable updateable)
-                    updateable.Update();
-            }
+            gameObjects.Update();
 
-            CheckGameObjectsToDestroy();
+            gameObjects.CheckGameObjectsToDestroy();
         }
 
-        private void CheckGameObjectsToDestroy()
-        {
-            for (int i = 0; i < gameObjects.Count; i++)
-            {
-                GameObject gameObject = gameObjects[i];
-                if (gameObject.ToDestroy)
-                {
-                    gameObjects.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
+        
 
         public override void Render()
         {

@@ -15,7 +15,7 @@ namespace Agario.GameObjects
 
         protected float radius;
 
-        public void TryRender()
+        public void Render()
         {
             float clampedX = Math.Clamp(position.X, camera.rectangle.Left, camera.rectangle.Left + camera.rectangle.Width);
             float clampedY = Math.Clamp(position.Y, camera.rectangle.Top, camera.rectangle.Top + camera.rectangle.Height);
@@ -23,10 +23,10 @@ namespace Agario.GameObjects
             float distanceToCamera = position.Distance(new Vector2f(clampedX, clampedY));
 
             if (distanceToCamera < radius)
-                Render();
+                Draw();
         }
 
-        virtual public void Render()
+        virtual public void Draw()
         {
             shape.Radius = radius;
             shape.Position = position - camera.center - new Vector2f(radius, radius) + (new Vector2f(Camera.cameraSize.X, Camera.cameraSize.Y) * 0.5f);

@@ -22,8 +22,7 @@ namespace Agario
             AgarioGame.window.Clear(Color.Black);
 
             foreach (GameObject gameObject in gameObjects)
-                if (gameObject is IRenderable renderable)
-                    renderable.TryRender();
+                gameObject.TryRender();
 
             AgarioGame.window.Display();
         }
