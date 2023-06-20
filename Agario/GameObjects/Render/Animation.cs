@@ -1,5 +1,6 @@
 ﻿using SFML.System;
 using SFML.Graphics;
+using Agario.Enums;
 
 namespace Agario.GameObjects.Render
 {
@@ -7,13 +8,16 @@ namespace Agario.GameObjects.Render
     {
         Texture[] frames;
 
-        public int frameToRender = 0;
+        public float frameToRender = 0;
         public bool paused = false;
+        public ActionAfterAnimationEnd actionAfterAnimationEnd = ActionAfterAnimationEnd.StopRenderingAnimation;
+        public bool isReverse = false;
+        public float animationPlaySpeed = 1;
 
         public bool isLastFrame 
             => frameToRender == frames.Length - 1;
 
-        public Animation(Texture[] frames, Vector2f position, int frameToRender = 0, bool paused = false, bool toRender = true)
+        public Animation(Texture[] frames, Vector2f position, int frameToRender = 0, bool paused = false, bool toRender = true, bool isReverse = false)
         {
             this.frames = frames;
             this.frameToRender = frameToRender;
@@ -21,6 +25,7 @@ namespace Agario.GameObjects.Render
             this.position = position;
             this.sprite = new Sprite(frames[frameToRender]);
             this.toRender = toRender;
+            this.isReverse = isReverse;
         }
 
         public Animation(Animation animatedSprite)
@@ -37,7 +42,7 @@ namespace Agario.GameObjects.Render
             toRender = animatedSprite.toRender;
         }
 
-        public static Animation newAnimation(string[] framesPaths, bool toRender = true, Vector2f position = new Vector2f(), int frameToRender = 0, bool paused = false)
+        public static Animation newAnimation(string[] framesPaths, bool toRender = true, Vector2f position = new Vector2f(), float frameToRender = 0, bool paused = false)
         {
             Texture[] frames = new Texture[framesPaths.Length];
 
@@ -50,23 +55,40 @@ namespace Agario.GameObjects.Render
                 stream.Close();
             }
 
-            Animation animatedSprite = new Animation(frames, position, frameToRender, paused, toRender);
+            Animation animatedSprite = new Animation(frames, position, (int)frameToRender, paused, toRender);
             return animatedSprite;
         }
 
         public override void TryRender(Camera camera)
         {
-            sprite.Texture = frames[frameToRender];
+            if (frameToRender < frames.Length && frameToRender >= 0)
+                sprite.Texture = frames[(int)frameToRender];
 
             base.TryRender(camera);
 
-            
-
             if (isLastFrame)
-                toRender = false;
+            {
+                switch (actionAfterAnimationEnd)
+                {
+                    case ActionAfterAnimationEnd.StopRenderingAnimation:
+                        toRender = false;
+                        break;
 
-            if (!paused && !isLastFrame)
-                frameToRender++;
+                    case ActionAfterAnimationEnd.PlayInReverse:
+                        isReverse = !isReverse;
+                        break;
+
+                    case ActionAfterAnimationEnd.RestartAnimation:
+                        frameToRender = 0;
+                        break;
+                }
+
+            }
+
+            if (paused)
+                return;
+
+            frameToRender += isReverse? 1 : -1;
         }
 
         public void Start()
