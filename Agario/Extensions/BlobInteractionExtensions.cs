@@ -19,16 +19,16 @@ namespace Agario.Extensions
 
             attacker.Mass += defender.Mass;
             attacker.shape.Radius = attacker.Radius;
-            defender.ToDestroy = true;
+            defender.toDestroy = true;
         }
 
         public static void TryEat(this Blob blob, Food food)
         {
-            if (blob.position.Distance(food.position) > blob.Radius - Food.radius)
+            if (blob.position.Distance(food.Position) > blob.Radius - Food.radius)
                 return;
             blob.Mass++;
             blob.shape.Radius = blob.Radius;
-            food.ToDestroy = true;
+            food.toDestroy = true;
         }
     }
 }

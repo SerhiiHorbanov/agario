@@ -15,9 +15,9 @@ namespace Agario.GameObjects.Render
         public float animationPlaySpeed = 1;
 
         public bool isLastFrame 
-            => frameToRender == frames.Length - 1;
+            => ((int)frameToRender == frames.Length - 1 && !isReverse) || ((int)frameToRender == 0 && isReverse);
 
-        public Animation(Texture[] frames, Vector2f position, int frameToRender = 0, bool paused = false, bool toRender = true, bool isReverse = false)
+        public Animation(Texture[] frames, Vector2f position, float animationPlaySpeed = 1, int frameToRender = 0, bool paused = false, bool toRender = true, bool isReverse = false)
         {
             this.frames = frames;
             this.frameToRender = frameToRender;
@@ -26,6 +26,7 @@ namespace Agario.GameObjects.Render
             this.sprite = new Sprite(frames[frameToRender]);
             this.toRender = toRender;
             this.isReverse = isReverse;
+            this.animationPlaySpeed = animationPlaySpeed;
         }
 
         public Animation(Animation animatedSprite)
@@ -40,9 +41,12 @@ namespace Agario.GameObjects.Render
             sprite = new Sprite(animatedSprite.sprite);
             position = animatedSprite.position;
             toRender = animatedSprite.toRender;
+            animationPlaySpeed = animatedSprite.animationPlaySpeed;
+            actionAfterAnimationEnd = animatedSprite.actionAfterAnimationEnd;
+            isReverse = animatedSprite.isReverse;
         }
 
-        public static Animation newAnimation(string[] framesPaths, bool toRender = true, Vector2f position = new Vector2f(), float frameToRender = 0, bool paused = false)
+        public static Animation newAnimation(string[] framesPaths, float animationPlaySpeed = 1, bool toRender = true, Vector2f position = new Vector2f(), float frameToRender = 0, bool paused = false)
         {
             Texture[] frames = new Texture[framesPaths.Length];
 
@@ -55,7 +59,7 @@ namespace Agario.GameObjects.Render
                 stream.Close();
             }
 
-            Animation animatedSprite = new Animation(frames, position, (int)frameToRender, paused, toRender);
+            Animation animatedSprite = new Animation(frames, position, animationPlaySpeed, (int)frameToRender, paused, toRender);
             return animatedSprite;
         }
 
@@ -88,7 +92,7 @@ namespace Agario.GameObjects.Render
             if (paused)
                 return;
 
-            frameToRender += isReverse? 1 : -1;
+            frameToRender += isReverse? -animationPlaySpeed : animationPlaySpeed;
         }
 
         public void Start()

@@ -4,7 +4,7 @@ namespace Agario.GameObjects
 {
     public abstract class GameObject
     {
-        public bool ToDestroy;
+        public bool toDestroy;
 
         public void TryUpdate()
         {

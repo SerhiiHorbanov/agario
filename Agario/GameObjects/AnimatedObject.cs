@@ -3,21 +3,15 @@ using Agario.GameObjects.Interfaces;
 
 namespace Agario.GameObjects
 {
-    class AnimatedObject : GameObject, IRenderable, IUpdateable
+    class AnimatedObject : GameObject, IRenderable
     {
         public Camera camera;
-        private Animation animation;
+        protected Animation animation;
 
         public AnimatedObject(Animation animation, Camera camera)
         {
             this.animation = animation;
             this.camera = camera;
-        }
-
-        public void Update()
-        {
-            if (animation.isLastFrame)
-                ToDestroy = true;
         }
 
         public void Render()

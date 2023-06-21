@@ -3,7 +3,7 @@ using SFML.System;
 using SFML.Graphics;
 using SFML.Window;
 using Agario.GameObjects;
-using Agario.GameObjects.Interfaces;
+using Agario.GameObjects.Render;
 using Agario.Input;
 using Agario.GameObjects.BlobControllers;
 using Agario.Extensions;
@@ -99,7 +99,7 @@ namespace Agario.States
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Food(position, color, camera);
+            return new Food(new Animation(Food.standartAnimation), position, camera);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Engine
             if (DateTime.Now.Ticks - lastTimingTick < ticksBetweenFrames)
             {
                 int timeToSleep = (int)((ticksBetweenFrames - (DateTime.Now.Ticks - lastTimingTick)) / TimeSpan.TicksPerMillisecond);
-                System.Threading.Thread.Sleep(timeToSleep);
+                System.Threading.Thread.Sleep(Math.Abs(timeToSleep));
             }
             lastTimingTick = DateTime.Now.Ticks;
         }

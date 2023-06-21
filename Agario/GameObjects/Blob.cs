@@ -19,19 +19,6 @@ namespace Agario.GameObjects
 
         public const float MoveSpeed = 50;
 
-        public const string teleportationAnimationPath = "Textures/Random teleport animation frames";
-
-        public static readonly Animation teleportationAnimation =
-            Animation.newAnimation(
-                new string[5]
-                {
-                    teleportationAnimationPath + "/frame0.png",
-                    teleportationAnimationPath + "/frame1.png",
-                    teleportationAnimationPath + "/frame2.png",
-                    teleportationAnimationPath + "/frame3.png",
-                    teleportationAnimationPath + "/frame4.png"
-                });
-
         public float Mass
         {
             get { return mass; }
@@ -90,7 +77,7 @@ namespace Agario.GameObjects
             {
                 GameObject gameObject = gameObjects[j];
 
-                if (!gameObject.ToDestroy)
+                if (!gameObject.toDestroy)
                 {
                     if (gameObject is Blob)
                         this.TryEat((Blob)gameObject);
@@ -109,8 +96,8 @@ namespace Agario.GameObjects
 
         private void CreateTeleportationAnimation()
         {
-            teleportationAnimation.position = position;
-            gameObjects.Add(new AnimatedObject(new Animation(teleportationAnimation), camera));
+            TeleportationEffect.teleportationAnimation.position = position;
+            gameObjects.Add(new TeleportationEffect(new Animation(TeleportationEffect.teleportationAnimation), camera));
         }
 
         public void Update()

@@ -9,7 +9,7 @@ namespace Agario.Extensions
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 GameObject gameObject = gameObjects[i];
-                if (gameObject.ToDestroy)
+                if (gameObject.toDestroy)
                 {
                     gameObjects.RemoveAt(i);
                     i--;

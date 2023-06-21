@@ -68,7 +68,7 @@ namespace Agario.GameObjects.Render
         }
 
         public bool isRendered(Camera camera)
-            => new IntRect((Vector2i)position, new Vector2i(Width, Height)).Intersects((IntRect)camera.rectangle);
+            => new IntRect((Vector2i)position - new Vector2i((int)(Width * 0.5f), (int)(Height * 0.5f)), new Vector2i(Width, Height)).Intersects((IntRect)camera.rectangle);
 
         public void Render(Camera camera)
         {
