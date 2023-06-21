@@ -14,14 +14,11 @@ namespace Agario.States
     {
         public static Vector2f mapSize = new Vector2f(5000, 5000);
 
-        Camera camera = new Camera();
-
         PlayerInput input = new PlayerInput();
 
-        Blob playerBlob;
+        public Scene scene = new Scene(new List<GameObject>(), new Camera());
 
-        List<GameObject> gameObjects = new List<GameObject>();
-        public List<int> gameObjectsToDestroy = new List<int>();
+        Blob playerBlob;
 
         private int startPlayerCount = 100;
         private int foodCount = 500;
@@ -33,32 +30,30 @@ namespace Agario.States
             input.AddVector2("move");
 
             for (int i = 0; i < foodCount; i++)
-                gameObjects.Add(NewFood());
+                scene.Add(NewFood());
 
             if (startPlayerCount <= 0)
                 return;
 
             playerBlob = NewPlayer(false);
 
-            gameObjects.Add(playerBlob);
+            scene.Add(playerBlob);
 
             for (int i = 1; i < startPlayerCount; i++)
-                gameObjects.Add(NewPlayer(true));
+                scene.Add(NewPlayer(true));
         }
 
         public override void Update()
         {
-            gameObjects.Update();
-
-            gameObjects.CheckGameObjectsToDestroy();
+            scene.Update();
         }
 
         
 
         public override void Render()
         {
-            camera.center = playerBlob.position;
-            camera.Render(gameObjects);
+            scene.camera.center = playerBlob.position;
+            scene.Render();
         }
 
         public override void Input()
@@ -89,8 +84,8 @@ namespace Agario.States
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
 
             if (isAi)
-                return new Blob(position, 5, color, gameObjects, camera);
-            return new Blob(position, 5, color, gameObjects, input, camera);
+                return new Blob(position, 5, color, scene.gameObjects, scene.camera);
+            return new Blob(position, 5, color, scene.gameObjects, input, scene.camera);
         }
 
         public Food NewFood()
@@ -99,7 +94,7 @@ namespace Agario.States
             byte[] colorBytes = new byte[3];
             AgarioGame.random.NextBytes(colorBytes);
             Color color = new Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-            return new Food(new Animation(Food.standartAnimation), position, camera);
+            return new Food(new Animation(Food.standartAnimation), position, scene.camera);
         }
     }
 }
